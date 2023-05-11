@@ -1,5 +1,13 @@
 {
   "canisters": {
+    "calculator": {
+      "main": "src/calculator/main.mo",
+      "type": "motoko"
+    },
+    "homework": {
+      "main": "src/homework/main.mo",
+      "type": "motoko"
+    },
     "first_project_backend": {
       "main": "src/first_project_backend/main.mo",
       "type": "motoko"
