@@ -6,9 +6,9 @@ import Buffer "mo:base/Buffer";
 import Result "mo:base/Result";
 
 actor Homework{
-  type Time = Time.Time;
+  public type Time = Time.Time;
 
-  type Homework = {
+  public type Homework = {
     title : Text;
     description : Text;
     time : Time;
@@ -19,8 +19,8 @@ actor Homework{
   var hwId : Nat = 0;
 
   public func addHomework(hw : Homework) : async Nat {
-    hwId := homeworkDiary.size() - 1;
     homeworkDiary.add(hw);
+    hwId := homeworkDiary.size() - 1;
     return hwId;
   };
 
@@ -35,13 +35,17 @@ actor Homework{
   public func updateHomework(homeworkId : Nat, task : Homework) : async Result.Result<(), Text> {
     if (homeworkId >= 0 and homeworkId < homeworkDiary.size()) {
       var hwUpdated = {
-        title = homeworkDiary.get(homeworkId).title;
-        description = homeworkDiary.get(homeworkId).description;
-        time = homeworkDiary.get(homeworkId).time;
-        completed = homeworkDiary.get(homeworkId).completed;
+        title = task.title;
+        description = task.description;
+        time = task.time;
+        completed = task.completed;
       };
 
+      let x = homeworkDiary.remove(homeworkId);
+      homeworkDiary.insert(homeworkId, hwUpdated);
+
       return #ok();
+
     } else {
       return #err("Invalid id");
     }
@@ -55,7 +59,10 @@ actor Homework{
         time = homeworkDiary.get(homeworkId).time;
         completed = true;
       };
+
+      let x = homeworkDiary.remove(homeworkId);
       homeworkDiary.insert(homeworkId, hwCompleted);
+      
       return #ok(homeworkDiary.get(homeworkId));
 
     } else {
